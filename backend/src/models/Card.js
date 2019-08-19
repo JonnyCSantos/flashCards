@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const CardSchema = new Schema ({
+const CardSchema = new Schema({
     front: {
         type: String,
         required: true

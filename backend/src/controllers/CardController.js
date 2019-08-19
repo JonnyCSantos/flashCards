@@ -2,28 +2,65 @@ const Card = require('../models/Card')
 
 module.exports = {
     async index(req, res) {
-        const cards = await Card.find()
-        // console.log()
-        return res.json(cards)
+        // find all cards
+        const allCards = await Card.find()
+        return res.json(allCards)
     },
-    async store(req, res) {
-        const { front, back } = req.body;
+    async show(req, res) {
+        try {
+            // find only one card by id
+            const cardSelected = await Card.findOne({ _id: req.params.id })
+            return res.json(cardSelected)
+        } catch (error) {
+            return res.status(400).json({ Error: error })
+        }
+    },
+    async create(req, res) {
+        try {
+            //get entry
+            const { front, back } = req.body;
 
-        const card = await Card.create({
-            front: front,
-            back: back
-        })
+            // check if card exists
+            const cardExists = await Card.findOne({
+                front: front,
+                back: back
+            });
+            if (cardExists) {
+                return res.json({ message: "card already exists" });
+            }
 
-        return res.json(card)
+            // create a card if not exists
+            const cardCreated = await Card.create({
+                front: front,
+                back: back
+            })
+            return res.json({ "Created with Success": cardCreated })
+
+        } catch (error) {
+            return res.status(400).json({ Error: error })
+        }
     },
     async delete(req, res) {
-        console.log('id', req.headers.id)
-        const db = req.db
-        
-        console.log(db.collection('cards'))
-        // db.collection('cards').removeOne({"_id": objectId(req.headers.id)}, (err, result) => {
-        // if (err) return console.log('oi',err)
-        // })
-        return res.json({"message": "Success"})
+        try {
+            // delete card by id
+            const cardDeleted = await Card.deleteOne({ _id: req.params.id })
+            return res.json({ deleted: cardDeleted })
+        } catch (error) {
+            return res.status(400).json({ Error: error })
+        }
+    },
+    async update(req, res) {
+        try {
+            // get body json
+            const { front, back } = req.body
+            // update based in body json
+            const cardUpdated = await Card.updateOne({ _id: req.params.id }, {
+                front: front,
+                back: back
+            })
+            return res.json({ updated: cardUpdated })
+        } catch (error) {
+            return res.status(400).json({ Error: error })
+        }
     }
 }
