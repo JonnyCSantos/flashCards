@@ -9,6 +9,10 @@ const CardSchema = new Schema({
         type: String,
         required: true
     },
+    deckId: {
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now

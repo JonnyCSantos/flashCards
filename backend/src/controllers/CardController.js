@@ -18,12 +18,13 @@ module.exports = {
     async create(req, res) {
         try {
             //get entry
-            const { front, back } = req.body;
+            const { front, back, deckId } = req.body;
 
             // check if card exists
             const cardExists = await Card.findOne({
                 front: front,
-                back: back
+                back: back,
+                deckId: deckId
             });
             if (cardExists) {
                 return res.json({ message: "card already exists" });
@@ -32,7 +33,8 @@ module.exports = {
             // create a card if not exists
             const cardCreated = await Card.create({
                 front: front,
-                back: back
+                back: back,
+                deckId: deckId
             })
             return res.json({ "Created with Success": cardCreated })
 
@@ -52,11 +54,12 @@ module.exports = {
     async update(req, res) {
         try {
             // get body json
-            const { front, back } = req.body
+            const { front, back, deckId } = req.body
             // update based in body json
             const cardUpdated = await Card.updateOne({ _id: req.params.id }, {
                 front: front,
-                back: back
+                back: back,
+                deckId: deckId
             })
             return res.json({ updated: cardUpdated })
         } catch (error) {
