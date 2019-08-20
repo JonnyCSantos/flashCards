@@ -15,6 +15,16 @@ module.exports = {
             return res.status(400).json({ Error: error })
         }
     },
+    async getByDeckId(req, res) {
+        try {
+            // find only one card by id
+            const cardSelected = await Card.find({ deckId: req.params.deckId })
+            console.log(cardSelected)
+            return res.json(cardSelected)
+        } catch (error) {
+            return res.status(400).json({ Error: error })
+        }
+    },
     async create(req, res) {
         try {
             //get entry

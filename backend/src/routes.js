@@ -14,6 +14,7 @@ routes.put('/decks/:id', DeckController.update)
 // Card Routes
 routes.get('/cards', CardController.index)
 routes.get('/cards/:id', CardController.show)
+routes.get('/cardsByDeckId/:deckId', CardController.getByDeckId)
 routes.post('/cards', CardController.create)
 routes.delete('/cards/:id', CardController.delete)
 routes.put('/cards/:id', CardController.update)
