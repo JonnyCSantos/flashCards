@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import DeckItem from './deckItem'
-import axios from 'axios'
+import api from '../../services/api'
 
 
 export default function Decks() {
     const [decks, setDecks] = useState([])
 
-    // get all decks
-    useEffect(() => {
-        async function loadDecks() {
-            const response = await axios.get(`http://localhost:3333/decks`)
+    function loadDecks() {
+        const load = async () => {
+            const response = await api.get(`/decks`)
             setDecks(response.data)
         }
-        loadDecks()
-    }, [decks]);
+        load();
+    }
+    // get all decks
+    useEffect(loadDecks, []);
 
-
+    console.log(decks)
     // new Deck
     const [isAdding, setIsAdding] = useState(false)
     const [newDeck, setNewDeck] = useState('')
@@ -28,12 +29,13 @@ export default function Decks() {
         setNewDeck(e)
     }
 
-    function handleAddSubmit(e) {
+    async function handleAddSubmit(e) {
         e.preventDefault()
-        axios.post(`http://localhost:3333/decks`, {
+        await api.post(`http://localhost:3333/decks`, {
             name: newDeck
         })
         setIsAdding(false)
+        loadDecks()
     }
 
     // render 
@@ -51,11 +53,11 @@ export default function Decks() {
                     <button type="button" onClick={() => handleAdd()}>+</button>
                 </div>
             }
-
             <ul className="deck__list">
                 {decks.map(deck => (
-                    <DeckItem key={deck._id} deck={deck} />
+                    <DeckItem load={loadDecks} key={deck._id} deck={deck} />
                 ))}
+
             </ul>
         </div>
     )
