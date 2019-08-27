@@ -1,12 +1,12 @@
 import React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
 
-import Decks from './pages/decks/decks'
+import Home from './pages/home/home'
 
 export default function Routes () {
     return (
         <BrowserRouter>
-            <Route path="/" exact component={Decks}/>
+            <Route path="/" exact component={Home}/>
         </BrowserRouter>
     )
 }
