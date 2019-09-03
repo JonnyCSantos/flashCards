@@ -4,7 +4,10 @@ import api from '../../services/api'
 
 
 export default function Decks() {
+    // get all decks
     const [decks, setDecks] = useState([])
+
+    useEffect(loadDecks, []);
 
     function loadDecks() {
         const load = async () => {
@@ -13,10 +16,7 @@ export default function Decks() {
         }
         load();
     }
-    // get all decks
-    useEffect(loadDecks, []);
 
-    console.log(decks)
     // new Deck
     const [isAdding, setIsAdding] = useState(false)
     const [newDeck, setNewDeck] = useState('')
@@ -38,18 +38,25 @@ export default function Decks() {
         loadDecks()
     }
 
+    //filter
+
+
     // render 
     return (
         <div>
             {isAdding ?
                 <div className="deck__healpers">
-                    <form action="" onSubmit={(e) => handleAddSubmit(e)}>
+                    <form onSubmit={(e) => handleAddSubmit(e)}>
                         <input type="text" name="addDeck" id="addDeck" onChange={(e) => handleChangeAdd(e.target.value)} />
                         <button type="submit">Adicionar</button>
                     </form>
                 </div>
                 :
                 <div className="deck__healpers">
+                    <form>
+                        <input type="text" name="seach-input" id="search-input" placeholder="Procure por deck" />
+                        <button type="submit">Search</button>
+                    </form>
                     <button type="button" onClick={() => handleAdd()}>+</button>
                 </div>
             }

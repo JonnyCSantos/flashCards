@@ -6,10 +6,10 @@ export default function (props) {
     const [isEdit, setIsEdit] = useState(false)
     const [deckEdited, setDeckEdited] = useState('')
 
-    console.log(deck)
     // Edit a deck
     function handleStartEdit() {
         setIsEdit(true)
+        setDeckEdited(deck.name)
     }
 
     function handleEditChange(e) {
@@ -23,6 +23,12 @@ export default function (props) {
 
         setIsEdit(false)
         load()
+    }
+
+    function keyPressed(e) {
+        if (e.key === 'Enter') {
+            handleEdit(deck._id)
+        }
     }
 
     //delete a deck
@@ -44,7 +50,7 @@ export default function (props) {
             {isEdit ?
                 <span>
                     <form action="">
-                        <input type="text" defaultValue={deck.name} onChange={(e) => handleEditChange(e)} />
+                        <input type="text" defaultValue={deck.name} onChange={(e) => handleEditChange(e)} onKeyPress={(e) => keyPressed(e)} />
                         <button type="button" onClick={() => handleEdit(deck._id)}>Editar</button>
                     </form>
                 </span>
